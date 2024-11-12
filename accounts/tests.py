@@ -72,6 +72,7 @@ class TestSignupView(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertFalse(User.objects.filter(username=invalid_data["username"]).exists())
         self.assertFalse(form.is_valid())
+        self.assertIn("このフィールドは必須です。", form.errors["password1"])
         self.assertIn("このフィールドは必須です。", form.errors["password2"])
 
     def test_failure_post_with_duplicated_user(self):
@@ -94,6 +95,7 @@ class TestSignupView(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertFalse(form.is_valid())
+        self.assertEqual(User.objects.filter(username=duplicated_data["username"]).count(), 1)
         self.assertIn("同じユーザー名が既に登録済みです。", form.errors["username"])
 
     def test_failure_post_with_invalid_email(self):

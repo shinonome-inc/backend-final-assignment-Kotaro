@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, TemplateView
 
 from .forms import SignupForm
 
@@ -17,3 +17,12 @@ class SignupView(CreateView):
         user = authenticate(self.request, username=username, password=password)
         login(self.request, user)
         return response
+
+
+class UserProfileView(TemplateView):
+    template_name = "accounts/profile.html"
+
+    def get_context_data(self, **kwargs) -> dict[str, str]:
+        context = super().get_context_data(**kwargs)
+        context["username"] = self.kwargs.get("username")
+        return context

@@ -191,7 +191,7 @@ class TestLoginView(TestCase):
     def test_success_post(self):
         valid_data = {
             "username": self.user.username,
-            "password": self.user.password
+            "password": "testpassword"
         }
         response = self.client.post(self.url, valid_data)
 

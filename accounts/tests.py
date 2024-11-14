@@ -178,10 +178,7 @@ class TestSignupView(TestCase):
 class TestLoginView(TestCase):
     def setUp(self):
         self.url = reverse("accounts:login")
-        self.user = User.objects.create_user(
-            username="login_test",
-            password="testpassword"
-        )
+        self.user = User.objects.create_user(username="login_test", password="testpassword")
 
     def test_success_get(self):
         response = self.client.get(self.url)
@@ -189,10 +186,7 @@ class TestLoginView(TestCase):
         self.assertTemplateUsed(response, "accounts/login.html")
 
     def test_success_post(self):
-        valid_data = {
-            "username": self.user.username,
-            "password": "testpassword"
-        }
+        valid_data = {"username": self.user.username, "password": "testpassword"}
         response = self.client.post(self.url, valid_data)
 
         print(response)
@@ -211,7 +205,10 @@ class TestLoginView(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertFalse(form.is_valid())
         self.assertNotIn(SESSION_KEY, self.client.session)
-        self.assertIn("正しいユーザー名とパスワードを入力してください。どちらのフィールドも大文字と小文字は区別されます。", form.errors["__all__"])
+        self.assertIn(
+            "正しいユーザー名とパスワードを入力してください。どちらのフィールドも大文字と小文字は区別されます。",
+            form.errors["__all__"],
+        )
 
     def test_failure_post_with_empty_password(self):
         invalid_data = {

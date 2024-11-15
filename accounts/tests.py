@@ -189,8 +189,6 @@ class TestLoginView(TestCase):
         valid_data = {"username": self.user.username, "password": "testpassword"}
         response = self.client.post(self.url, valid_data)
 
-        print(response)
-
         self.assertRedirects(response, reverse(settings.LOGIN_REDIRECT_URL), status_code=302, target_status_code=200)
         self.assertIn(SESSION_KEY, self.client.session)
 

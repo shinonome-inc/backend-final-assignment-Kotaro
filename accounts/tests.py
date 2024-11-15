@@ -225,6 +225,13 @@ class TestLoginView(TestCase):
 class TestLogoutView(TestCase):
     def setUp(self):
         self.url = reverse("accounts:logout")
+        valid_data = {
+            "username": "testuser",
+            "password": "testpassword"
+        }
+        User.objects.create_user(username=valid_data["username"], password=valid_data["password"])
+        response = self.client.post(reverse("accounts:login"), valid_data)
+        self.assertEqual(response.status_code, 302)
 
     def test_success_post(self):
         response = self.client.post(self.url)
